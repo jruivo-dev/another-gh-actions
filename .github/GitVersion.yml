@@ -6,38 +6,37 @@ assembly-file-versioning-scheme: MajorMinorPatch
 commit-message-incrementing: Enabled
 ignore:
   sha: []
-# Safe default if a branch doesn't match anything below
 increment: Patch
+
 branches:
-  # Production line. Only changes via PRs (merges) land here.
   master:
     regex: ^master$
-    label: ''                       # stable, no prerelease tag
-    increment: Patch              # if something lands straight on master (e.g., hotfix PR), default bump is Patch
+    label: ''                       # stable, no prerelease
+    increment: Patch
     tracks-release-branches: true
-  # Integration line. Always targeting the next minor.
+
   develop:
     regex: ^develop$
     label: alpha                    # prereleases of the next minor
     increment: Minor
     source-branches: [ master ]
-  # Stabilization line. Can be cut from develop (next minor) or from master (patch-only release).
+
   release:
     regex: ^release[/-].*$
-    label: rc                       # release candidate builds
+    label: rc                        # release candidate builds
     is-release-branch: true
-    increment: None               # freeze base version; only rc/build metadata increments
+    increment: None
     source-branches: [ develop, master ]
-  # Feature work. PRs from here typically go into develop.
+
   feature:
     regex: ^feature[/-].*$
     label: alpha
     increment: Minor
     source-branches: [ develop, master ]
-  # PR builds inherit the target branch version, but are marked as PR prereleases.
+
   pull-request:
-    regex: ^(pull|pull\-request|pr)[/-].*$
+    regex: ^(pull|pull-request|pr)[/-].*$
     label: pr
-    increment: Inherit            # inherit bump rules from the target branch
-    track-merge-target: true      # version is calculated from the PR target (develop/release/master)
+    increment: Inherit
+    track-merge-target: true
     source-branches: [ master, develop, release, feature ]
