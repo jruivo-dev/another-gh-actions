@@ -48,11 +48,9 @@ jobs:
       - name: Compute Package Version
         id: set_version
         run: |
-          VERSION="${{ steps.gitversion.outputs.NuGetVersionV2 }}"
+          VERSION="${{ steps.gitversion.outputs.SemVer }}"
           if [ -n "${{ github.event.inputs.versionSuffix }}" ]; then
-            BASE="${{ steps.gitversion.outputs.MajorMinorPatch }}"
-            VERSION="${BASE}-${{ github.event.inputs.versionSuffix }}"
+            VERSION="${VERSION}-${{ github.event.inputs.versionSuffix }}"
           fi
           echo "PACKAGE_VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "Resolved package version: $VERSION"
-
