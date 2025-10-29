@@ -1,42 +1,25 @@
 mode: ContinuousDelivery
-next-version: v0.2.0
+next-version: 0.2.0       # fallback
 tag-prefix: '[vV]'
-assembly-versioning-scheme: MajorMinorPatch
-assembly-file-versioning-scheme: MajorMinorPatch
 commit-message-incrementing: Enabled
-ignore:
-  sha: []
 increment: Patch
 
 branches:
   master:
     regex: ^master$
-    label: ''                       # stable, no prerelease
+    label: ''                # stable, no pre-release
     increment: Patch
     tracks-release-branches: true
 
   develop:
     regex: ^develop$
-    label: alpha                    # prereleases of the next minor
+    label: alpha
     increment: Minor
-    source-branches: [ master ]
+    source-branches: [master]
 
   release:
     regex: ^release[/-].*$
-    label: rc                        # release candidate builds
+    label: ''               # treat release branches as stable
     is-release-branch: true
     increment: None
-    source-branches: [ develop, master ]
-
-  feature:
-    regex: ^feature[/-].*$
-    label: alpha
-    increment: Minor
-    source-branches: [ develop, master ]
-
-  pull-request:
-    regex: ^(pull|pull-request|pr)[/-].*$
-    label: pr
-    increment: Inherit
-    track-merge-target: true
-    source-branches: [ master, develop, release, feature ]
+    source-branches: [develop, master]
